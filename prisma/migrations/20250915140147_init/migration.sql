@@ -1,10 +1,11 @@
 -- CreateTable
-CREATE TABLE "public"."User" (
+CREATE TABLE "public"."UserAccount" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT,
+    "password" TEXT NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserAccount_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -19,7 +20,7 @@ CREATE TABLE "public"."Todo" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
+CREATE UNIQUE INDEX "UserAccount_email_key" ON "public"."UserAccount"("email");
 
 -- AddForeignKey
-ALTER TABLE "public"."Todo" ADD CONSTRAINT "Todo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."Todo" ADD CONSTRAINT "Todo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."UserAccount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
