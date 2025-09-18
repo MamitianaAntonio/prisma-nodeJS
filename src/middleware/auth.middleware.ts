@@ -1,0 +1,31 @@
+import { NextFunction, Request, Response } from "express";
+import { verifyToken } from "../utils/jwt";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: { userId: number };
+    }
+  }
+}
+
+// authMiddleware function to verify token and go to the next route
+export default function authMiddleware (req: Request, res: Response, next: NextFunction) {
+  const header = req.headers["authorization"];
+
+  if (!header) {
+    return res.status(401).json({ error : "No token provided"});
+  }
+
+  const token = header.split(" ")[1];
+
+  try {
+    const decoded = verifyToken(token) as { userId: number};
+    req.user = decoded;
+    console.log(req.user.userId);
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(403).json({ error : "Invalid or expered token"})
+  }
+}
