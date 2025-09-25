@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser } from "../services/user.service";
+import { loginUser, registerUser } from "../services/user.service";
 
 const router = Router();
 
@@ -11,6 +11,17 @@ router.post("/register", async (req, res) => {
     res.json(user);
   } catch (error) {
     res.status(404).json({ error: (error as Error).message });
+  }
+});
+
+// post user fucntion to login
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const token = await loginUser(email, password);
+    res.json({ token });
+  } catch (error) {
+    res.status(401).json({ error: (error as Error).message });
   }
 });
 
