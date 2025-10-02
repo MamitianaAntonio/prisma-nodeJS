@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import prisma from "../prismaClient";
-import { generateToken } from "../utils/jwt";
+import { generateToken } from "../utils/jwt.ts";
+import prisma from "../prismaClient.ts";
 
 // function to register a new user
 export async function registerUser(
@@ -10,14 +10,14 @@ export async function registerUser(
 ) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  return await prisma.UserAccount.create({
+  return await prisma.userAccount.create({
     data: { email, password: hashedPassword, name },
   });
 }
 
 // function to login
 export async function loginUser(email: string, password: string) {
-  const user = await prisma.UserAccount.findUnique({ where: { email } });
+  const user = await prisma.userAccount.findUnique({ where: { email } });
   if (!user) throw new Error("User not found");
 
   const isValid = await bcrypt.compare(password, user.password);
