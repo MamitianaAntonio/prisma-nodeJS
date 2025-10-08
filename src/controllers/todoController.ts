@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prismaClient";
+import { error } from "console";
 
 // get all todos
 export const getTodos = async (req: Request, res: Response) => {
@@ -35,5 +36,38 @@ export const createTodo = async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.status(500).json({ error : "Failed to create todo"});
+  }
+};
+
+// update todo
+export const updateTodo = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id as number;
+    const { id } = req.params;
+    const { title, completed } = req.body;
+
+    const todo = await prisma.todo.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!todo || todo.userId !== userId) {
+      return res.status(!todo ? 404 : 403).json({
+        error: !todo
+          ? "Todo not found"
+          : "You are not allowed to modify this todo",
+      });
+    }
+
+    const updated = await prisma.todo.update({
+      where: { id: todo.id },
+      data: { title, completed },
+    });
+
+    res.json({
+      message: "Todo is updated",
+      updated,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update todo." });
   }
 };
