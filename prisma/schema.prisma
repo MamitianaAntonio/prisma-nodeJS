@@ -20,6 +20,6 @@ model Todo {
   title     String
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
-  user      UserAccount     @relation(fields: [userId], references: [id])
+  user      UserAccount     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
 }
