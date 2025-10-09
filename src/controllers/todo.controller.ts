@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import prisma from "../prismaClient";
-import { error } from "console";
 
 // get all todos
 export const getTodos = async (req: Request, res: Response) => {
