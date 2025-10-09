@@ -1,6 +1,6 @@
 import { Router } from "express";
-import authMiddleware from "../middleware/auth.middleware";
-import { createTodo, deleteTodo, getTodos, updateTodo } from "../controllers/todo.controller";
+import { createTodo, deleteTodo, getTodos, updateTodo } from "../controllers/todo.controller.ts";
+import authMiddleware from "../middleware/auth.middleware.ts";
 
 const router = Router();
 
