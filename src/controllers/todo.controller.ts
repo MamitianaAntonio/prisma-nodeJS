@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import prisma from "../prismaClient";
+import type { Request, Response } from "express";
+import prisma from "../prismaClient.ts";
 
 // get all todos
 export const getTodos = async (req: Request, res: Response) => {
