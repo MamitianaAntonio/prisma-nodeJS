@@ -4,7 +4,14 @@
   "description": "This is a simple test about prisma nodejs",
   "main": "index.js",
   "scripts": {
-    "test": ""
+    "dev": "nodemon --watch src --exec ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:studio": "prisma studio",
+    "lint": "tsc --noEmit",
+    "test": "echo \"No tests yet\""
   },
   "keywords": [
     "todo, task"
