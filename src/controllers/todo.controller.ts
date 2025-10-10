@@ -4,7 +4,7 @@ import prisma from "../prismaClient.ts";
 // get all todos
 export const getTodos = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id as number;
+    const userId = (req as any).user.userId as number;
     const todos = await prisma.todo.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
@@ -19,7 +19,7 @@ export const getTodos = async (req: Request, res: Response) => {
 // create a new todo
 export const createTodo = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id as number;
+    const userId = (req as any).user.userId as number;
     const { title } = req.body;
     if (!title) {
       return res.status(400).json({ message: "Title is required" });
@@ -41,7 +41,7 @@ export const createTodo = async (req: Request, res: Response) => {
 // update todo
 export const updateTodo = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id as number;
+    const userId = (req as any).user.userId as number;
     const { id } = req.params;
     const { title, completed } = req.body;
 
@@ -74,7 +74,7 @@ export const updateTodo = async (req: Request, res: Response) => {
 // delele a todo
 export const deleteTodo = async (req : Request, res : Response) => {
   try {
-    const userId = (req as any).user.id as number;
+    const userId = (req as any).user.userId as number;
     const { id } = req.params;
 
     const todo = await prisma.todo.findUnique({
