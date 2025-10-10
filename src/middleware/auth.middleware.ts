@@ -21,6 +21,7 @@ export default function authMiddleware (req: Request, res: Response, next: NextF
 
   try {
     const decoded = verifyToken(token) as { userId: number};
+    console.log(decoded) 
     req.user = decoded;
     console.log(req.user.userId);
     next();
