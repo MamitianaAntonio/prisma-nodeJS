@@ -26,3 +26,11 @@ export async function loginUser(email: string, password: string) {
 
   return { token, user };
 }
+
+// update user name
+export async function updateUserName (userId : number, name : string) {
+  return await prisma.userAccount.update({
+    where : { id : userId },
+    data : { name }
+  })  
+}
