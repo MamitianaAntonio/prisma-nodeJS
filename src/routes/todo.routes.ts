@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { createTodo, deleteTodo, getTodos, updateTodo } from "../controllers/todo.controller.ts";
+import { createTodo, deleteTodo, getAllTodos, getTodoByTitle, updateTodo } from "../controllers/todo.controller.ts";
 import authMiddleware from "../middleware/auth.middleware.ts";
 
 const router = Router();
 
-router.get("/", authMiddleware, getTodos);
+router.get("/", authMiddleware, getAllTodos);
+router.get("/title", authMiddleware, getTodoByTitle);
 router.post("/", authMiddleware, createTodo);
 router.put("/:id", authMiddleware, updateTodo);
 router.delete("/:id", authMiddleware, deleteTodo);
