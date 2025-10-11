@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { loginUser, registerUser, updateUserName } from "../services/user.service.ts";
+import { loginUser, registerUser, updateUserName, updateUserPassword } from "../services/user.service.ts";
 
 // logic controller to register an account
 export const registerUserController = async (req : Request, res : Response) => {
@@ -43,7 +43,7 @@ export const updateUserNameController = async (req : Request, res : Response) =>
     const { name } = req.body;
     
     if (!userId) {
-      return res.status(401).json({ error : "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized" });
     }
     
     if(!name) {
@@ -59,3 +59,27 @@ export const updateUserNameController = async (req : Request, res : Response) =>
     res.status(401).json({ error: (error as Error).message });    
   }
 }
+
+// login controller to update password
+export const updatePasswordController = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.userId;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!userId) throw new Error("Unauthorized");
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Both old and new passwords are required",
+      });
+    }
+
+    await updateUserPassword(userId, oldPassword, newPassword);
+    res.json({
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: (error as Error).message,
+    });
+  }
+};
