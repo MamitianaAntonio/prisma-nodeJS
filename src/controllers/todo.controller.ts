@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import prisma from "../prismaClient.ts";
 
 // get all todos
-export const getTodos = async (req: Request, res: Response) => {
+export const getAllTodos = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.userId as number;
     const todos = await prisma.todo.findMany({
@@ -15,6 +15,37 @@ export const getTodos = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to fetch todos" });
   }
 };
+
+// get a todo by title
+export const getTodoByTitle = async (req : Request, res: Response) => {
+  try {
+    const userId = (req as any).user.userId as number; 
+    const { title } = req.query;
+    
+    if (!title || typeof title !== "string") {
+      return res.status(400).json({ error: "Title is required" });
+    }
+    // fetch using prisma methods
+    const todo = await prisma.todo.findFirst({
+      where : {
+        title : {
+          equals : title,
+          mode : "insensitive",
+        },
+        userId
+      },
+    })
+    
+    if(!todo) {
+      return res.status(404).json({ error : "Todo not found "});
+    }
+    
+    res.json({todo});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error : "Failed to fetch the todo" });
+  }
+}  
 
 // create a new todo
 export const createTodo = async (req: Request, res: Response) => {
