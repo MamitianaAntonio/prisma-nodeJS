@@ -8,7 +8,7 @@ export async function registerUser(
   password: string,
   name?: string,
 ) {
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 12);
 
   return await prisma.userAccount.create({
     data: { email, password: hashedPassword, name },
@@ -34,3 +34,23 @@ export async function updateUserName (userId : number, name : string) {
     data : { name }
   })  
 }
+
+// change password
+export async function updateUserPassword (userId : number, oldPassword : string, newPassword : string) {
+  const user = await prisma.userAccount.findUnique({
+    where : {id : userId},
+  });
+
+  if(!user) throw new Error("User not found");
+
+  // verify old password
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatch) throw new Error("Old password is incorrect");
+
+  const hashedNewPassword = await await bcrypt.hash(newPassword, 12);
+  
+  return await prisma.userAccount.update({
+    where : { id : userId},
+    data : { password : hashedNewPassword}
+  })
+} 
