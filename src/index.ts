@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/users", userRoutes);
-app.use("/api/todos", todoRoutes)
+app.use("/api/todos", todoRoutes);
 
 app.listen(PORT, () => {
   console.log("The server was running", PORT);
