@@ -30,8 +30,7 @@ export const loginUserController = async (req : Request, res : Response) => {
         id: user.id,
         email: user.email,
       },
-    });
-  } catch (error) {
+    }); } catch (error) {
     res.status(401).json({ error: (error as Error).message });
   }
 }

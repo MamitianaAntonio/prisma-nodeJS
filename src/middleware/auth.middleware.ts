@@ -10,20 +10,24 @@ declare global {
 }
 
 // authMiddleware function to verify token and go to the next route
-export default function authMiddleware (req: Request, res: Response, next: NextFunction) {
+export default function authMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const header = req.headers["authorization"];
 
   if (!header) {
-    return res.status(401).json({ error : "No token provided"});
+    return res.status(401).json({ error: "No token provided" });
   }
 
   const token = header.split(" ")[1];
 
   try {
-    const decoded = verifyToken(token) as { userId: number};
+    const decoded = verifyToken(token) as { userId: number };
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(403).json({ error : "Invalid or expered token"})
+    return res.status(403).json({ error: "Invalid or expered token" });
   }
 }
